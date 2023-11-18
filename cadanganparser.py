@@ -43,7 +43,7 @@ def print_html_tags_and_text(file_path):
                 if current_part == "" and not read_string:
                     error_space = True
                 elif current_part and not error_space and not read_string:
-                    if (current_part not in ["html", "title", "head", "body", "h1", "h2", "h3", "h4", "h5", "h6", "p", "br", "em", "b", "abbr", "strong", "small", "hr", "div", "table", "tr", "td", "th", "rel", "class", "href", "src", "alt", "type", "action", "method", "GET", "POST", "type", "form", "img", "a", "button", "input", "link", "script", "!--"]):
+                    if (current_part not in ["html", "title", "head", "body", "h1", "h2", "h3", "h4", "h5", "h6", "p", "br", "em", "b", "abbr", "strong", "small", "hr", "div", "table", "tr", "td", "th", "rel", "class", "href", "src", "alt", "type", "action", "method", "GET", "POST", "type", "form", "img", "a", "button", "input", "link", "script"]):
                         result.append('STR')
                     else:
                         result.append(current_part)
@@ -54,7 +54,7 @@ def print_html_tags_and_text(file_path):
                 current_part += char
         else:
             current_part += char
- 
+
     # Add any remaining part
     if current_part:
         result.append(current_part)
