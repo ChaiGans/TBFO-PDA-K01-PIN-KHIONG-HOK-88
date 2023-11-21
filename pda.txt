@@ -1,14 +1,73 @@
 Q P F # total states
-a # input word symbols
+<html > </html <head </head <body </body <title </title <link </link rel = href X STR notvalid <script </script <h1 </h1 <h2 </h2 <h3 </h3 <h4 </h4 <h5 </h5 <h6 </h6 <p </p <br </br <em </em <b </b <abbr </abbr <strong </strong <small </small <hr </hr <div </div <a </a src <img </img alt <button </button type <form </form action method <input </input <table </table <tr </tr <td </td <th </th # input word symbols
 Z Y # stack symbols
-Q # starting state
+START # starting state
 Z # starting stack
 F # accepting states
 F # E - accepts with empty stack or F - accepts with accepting state
-Q a Z Q YZ # list of productions (current state, read from word, take from stack, next state, add to stack)
-Q a Y Q YY
-Q e Z P Z
-Q e Y P Y 
+
+START <html Z START OHTMLZ  # list of productions (current state, read from word, top stack, next state, action)
+START > OHTML HEAD CHTMLOHTML
+
+HEAD <head CHTML HEAD OHEADCHTML
+HEAD > OHEAD HEAD CHEADOHEAD 
+HEAD <title OHEAD HEAD OTITLEOHEAD
+HEAD id OTITLE HEAD IDOTITLE
+HEDA class OTITLE HEAD CLASSOTITLE
+HEAD style OTITLE HEAD STYLEOTITLE
+HEAD > OTITLE INSIDETITLE CTITLEOTITLE
+HEAD </title CTITLE HEAD e
+HEAD > OTITLE HEAD e
+HEAD <script OHEAD HEAD OSCRIPTOHEAD
+HEAD id OSCRIPT HEAD IDOSCRIPT
+HEAD class OSCRIPT HEAD CLASSOSCRIPT
+HEAD style OSCRIPT HEAD STYLEOSCRIPT
+HEAD src OSCRIPT SCRIPTVALID SRCOSCRIPT
+HEAD > OSCRIPT INSIDESCRIPT CSCRIPTOSCRIPT
+HEAD </script CSCRIPT HEAD e
+HEAD > OSCRIPT HEAD e
+HEAD id OTITLE HEAD IDOTITLE
+HEAD class OTITLE HEAD CLASSOTITLE
+HEAD style OTITLE HEAD STYLEOTITLE
+HEAD <link OHEAD INLINK OLINKOHEAD
+INLINK rel OLINK INLINK RELOLINK
+INLINK href OLINK INLINK HREFOLINK
+INLINK = REL INLINK =REL
+INLINK = HREF INLINK =HREF
+INLINK X = INLINK X=
+INLINK X e INLINK e
+INLINK = e INLINK e
+INLINK REL e INLINK e
+INLINK > OLINK HEAD OLINK
+HEAD > OLINK HEAD e
+
+HEAD = ID HEAD =ID
+HEAD = CLASS HEAD =CLASS
+HEAD = STYLE HEAD =STYLE
+HEAD X = HEAD X=
+HEAD e X HEAD e
+HEAD e =  HEAD e
+HEAD e ID HEAD 
+HEAD e CLASS HEAD e
+HEAD e STYLE HEAD e
+
+INSIDETITLE STR CTITLE INSIDETITLE CTITLE
+INSIDETITLE e CTITLE HEAD CTITLE
+
+INSIDESCRIPT STR CTITLE INSIDESCRIPT CTITLE
+INSIDESCRIPT e CTITLE HEAD CTITLE
+
+SCRIPTVALID = SRC SCRIPTVALID =SRC
+SCRIPTVALID X = SCRIPTVALID X=
+SCRIPTVALID e X SCRIPTVALID e
+SCRIPTVALID e = SCRIPTVALID e
+SCRIPTVALID e SRC HEAD e
+
+END </html CHTML END e
+END > OHTML FINAL e
+
+FINAL e Z FINAL e
+
 P a Z P e 
 P a Y P e
 P e Z F e
