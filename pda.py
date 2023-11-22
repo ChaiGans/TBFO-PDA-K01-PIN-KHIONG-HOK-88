@@ -1,3 +1,5 @@
+from main import *
+
 def bacapda(path: str) -> dict :
     pda = {
         'states' : [],
@@ -139,5 +141,6 @@ def processingpda(pda, tokens):
             print("SAYANG SEKALI KAMU SALAH")
 
 thepda=bacapda("pda.txt")
-tokens=['<html', '>', '<head', '>', '<script', 'src', '=', 'X', '>', '</script', '>', '</head', '>', '<body', '>', '<h1', '>', 'STR', '</h1', '>', '<p', '>', 'STR', '</p', '>', '<!--', 'STR', '-->', '</body', '>', '</html', '>']
+# tokens=['<html', '>', '<head', '>', '<script', '>', '</script', '>', '</head', '>', '<body', '>', '</body', '>', '</html', '>']
+tokens = print_html_tags_and_text("tes.html")
 processingpda(thepda,tokens)
