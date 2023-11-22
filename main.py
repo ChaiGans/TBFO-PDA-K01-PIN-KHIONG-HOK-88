@@ -24,8 +24,8 @@ def print_html_tags_and_text(file_path):
     i = 0
     while i < len(content):
         char = content[i]
-        print("Current Part:", current_part)
-        print(result)
+        # print("Current Part:", current_part)
+        # print(result)
         if char == '<':
             if current_part.strip() and not inside_tag:
                 result.append("STR")
@@ -198,13 +198,14 @@ def print_html_tags_and_text(file_path):
     if current_part:
         result.append(current_part)
     result = [item for item in result if not (item.isspace() and item != 'STR')]
+    print(result)
     return result
 
 
-if len(sys.argv) != 2:
-    print("Usage: python main.py <filename>")
-else:
-    print_html_tags_and_text(sys.argv[1])
+# if len(sys.argv) != 2:
+#     print("Usage: python main.py <filename>")
+# else:
+#     print_html_tags_and_text(sys.argv[1])
 
-hasil = print_html_tags_and_text("inputReject.html")
-print("ini hasil",hasil)
+# hasil = print_html_tags_and_text("tes.html")
+# print("ini hasil",hasil)

@@ -38,32 +38,33 @@ def bacapda(path: str) -> dict :
             elif line_number ==7:
                 pda['pda_type']=line.strip()
             elif line_number >= 8:
-                trans ={
-                    'current' : 0,
-                    'input' : 0,
-                    'top' : 0,
-                    'next' : 0,
-                    'push' : 0,
-                }
+                if line!= '\n':
+                    trans ={
+                        'current' : 0,
+                        'input' : 0,
+                        'top' : 0,
+                        'next' : 0,
+                        'push' : 0,
+                    }
 
-                words = line.split()
-                word0 = words[0]
-                trans['current']=word0
-                if word0 not in pda["states"]: #otomatis masuki nama state dari transition function
-                    pda["states"].append(word0)
-                word1=words[1]
-                trans['input']=word1
-                word2=words[2]
-                trans['top']=word2
-                if word2 not in pda["stack_symbols"]: #otomatis masuki stack symbol dari transition function
-                    pda["stack_symbols"].append(word2) 
-                word3=words[3]
-                trans['next']=word3
-                word4=words[4]
-                trans['push']=word4.split(',')
+                    words = line.split()
+                    word0 = words[0]
+                    trans['current']=word0
+                    if word0 not in pda["states"]: #otomatis masuki nama state dari transition function
+                        pda["states"].append(word0)
+                    word1=words[1]
+                    trans['input']=word1
+                    word2=words[2]
+                    trans['top']=word2
+                    if word2 not in pda["stack_symbols"]: #otomatis masuki stack symbol dari transition function
+                        pda["stack_symbols"].append(word2) 
+                    word3=words[3]
+                    trans['next']=word3
+                    word4=words[4]
+                    trans['push']=word4.split(',')
 
-                if trans not in pda['transition']:
-                    pda['transition'].append(trans)
+                    if trans not in pda['transition']:
+                        pda['transition'].append(trans)
                 
             line_number += 1
     
@@ -106,7 +107,16 @@ def processingpda(pda, tokens):
         # print("Stack :",stack)
         # print("state :",state)
         for object in pda["transition"]:
-            if(object["current"]==state):
+            if(object["current"]==state and object["current"]!="FINAL"):
+                if(object["input"]=="e"):
+                    if object["top"]==stack[-1]:
+                        stack.pop()
+                        if object['push'][0]!="e":
+                            # stack.append(object['push'][0])
+                            for any in reversed(object["push"]):
+                                stack.append(any)
+                        state=object['next']
+            if(object["current"]==state):                        
                 if(object["input"]==cur_token):
                     if object["top"]==stack[-1]:
                         stack.pop()
@@ -144,4 +154,5 @@ def processingpda(pda, tokens):
 thepda=bacapda("pda.txt")
 # tokens=['<html', '>', '<head', '>', '<script', '>', '</script', '>', '</head', '>', '<body', '>', '</body', '>', '</html', '>']
 tokens = print_html_tags_and_text("tes.html")
+print()
 processingpda(thepda,tokens)
