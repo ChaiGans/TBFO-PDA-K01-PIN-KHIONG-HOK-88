@@ -19,6 +19,10 @@ def print_html_tags_and_text(file_path):
     in_method_attribute = False
     in_type_attribute = False
     in_button_attribute = False
+    reading_space_between = False
+    reading_space_between_input = False
+    reading_space_between_form = False
+    
     valid_tags = ["html", "title", "head", "body", "h1", "h2", "h3", "h4", "h5", "h6", "p", "br", "em", "b", "abbr", "strong", "small", "hr", "div", "table", "tr", "td", "th", "rel", "class", "href", "src", "alt", "type", "action", "method", "GET", "POST", "type", "form", "img", "a", "button", "input", "link", "script", "!--"]
 
     i = 0
@@ -111,8 +115,11 @@ def print_html_tags_and_text(file_path):
                 else:
                     inside_tag = True
         elif char == '=' and in_form_tag:
-            if in_form_tag and current_part == 'method':
-                in_method_attribute = True  # We are now inside a 'method' attribute
+            if in_form_tag:
+                if current_part == 'method':
+                    in_method_attribute = True
+                else:
+                    in_method_attribute = False
             if not read_string:
                 result.append(current_part)
                 result.append(char)
@@ -120,11 +127,18 @@ def print_html_tags_and_text(file_path):
             else:
                 current_part += char
         elif char == '"' and in_form_tag:
-            if read_string and in_method_attribute:
-                    if current_part in ['GET', 'POST','get','post']:
-                        result.append('X')
-                    in_method_attribute = False
-                    current_part = ""
+            if read_string :
+                if in_method_attribute and current_part in ['GET', 'POST','get','post'] and ' ' not in current_part :
+                    result.append('X')
+                elif not in_method_attribute:
+                    result.append('X')
+                in_method_attribute = False
+                reading_space_between_form = False
+                current_part = ""
+            else:
+                current_part=""
+                if in_method_attribute:
+                    reading_space_between_form = True
             read_string = not read_string
         elif char == '=' and in_input_tag:
             if in_input_tag and current_part == 'type':
@@ -136,11 +150,16 @@ def print_html_tags_and_text(file_path):
             else:
                 current_part += char
         elif char == '"' and in_input_tag:
-            if read_string and in_type_attribute:
-                    if current_part in ['text', 'password','email','number','checkbox']:
+            if read_string:
+                if in_type_attribute and current_part in ['text', 'password','email','number','checkbox'] and ' ' not in current_part :
                         result.append('X')
-                    in_type_attribute = False
-                    current_part = ""
+                in_type_attribute = False
+                reading_space_between_input = False
+                current_part = ""
+            else:
+                current_part=""
+                if in_type_attribute:
+                    reading_space_between_input = True
             read_string = not read_string
         elif char == '=' and in_button_tag:
             if in_button_tag and current_part == 'type':
@@ -152,12 +171,23 @@ def print_html_tags_and_text(file_path):
             else:
                 current_part += char
         elif char == '"' and in_button_tag:
-            if read_string and in_button_attribute:
-                    if current_part in ['submit','reset','button']:
+            if read_string:
+                if in_button_attribute and current_part in ['submit','reset','button'] and ' ' not in current_part :
                         result.append('X')
-                    in_button_attribute = False
-                    current_part = ""
+                in_button_attribute = False
+                reading_space_between = False
+                current_part = ""
+            else:
+                current_part=""
+                if in_button_attribute:
+                    reading_space_between = True
             read_string = not read_string
+        elif read_string and reading_space_between:
+            current_part += char
+        elif read_string and reading_space_between_input:
+            current_part += char
+        elif read_string and reading_space_between_form:
+            current_part += char
         elif char == '>':
             if current_part and not error_space:  # Add the current part if it exists
                 result.append(current_part)
@@ -166,6 +196,9 @@ def print_html_tags_and_text(file_path):
             result.append('>')  # Add the '>' as a separate item
             current_part = ""
             inside_tag = False
+            in_form_tag = False
+            in_button_tag = False
+            in_input_tag = False
             error_space = False
             in_comment = False
         elif inside_tag:
@@ -207,5 +240,5 @@ def print_html_tags_and_text(file_path):
 # else:
 #     print_html_tags_and_text(sys.argv[1])
 
-# hasil = print_html_tags_and_text("tes.html")
+# hasil = print_html_tags_and_text("testing.html")
 # print("ini hasil",hasil)
