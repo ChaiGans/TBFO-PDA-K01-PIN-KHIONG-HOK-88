@@ -109,12 +109,13 @@ def processingpda(pda, tokens):
             if(object["current"]==state):
                 if(object["input"]==cur_token):
                     if object["top"]==stack[-1]:
+                        stack.pop()
                         # print(f"infotop:{stack[-1]}")
                         # print(f"statebefore:{state}")
                         if object['push'][0]!="e":
-                            stack.append(object['push'][0])
-                        else:
-                            stack.pop()
+                            # stack.append(object['push'][0])
+                            for any in reversed(object["push"]):
+                                stack.append(any)
                         state=object['next']
                         # print(f"next:{object['next']}")
                         # print(f"push:{object['push']}")
