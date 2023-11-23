@@ -141,8 +141,11 @@ def print_html_tags_and_text(file_path):
                     reading_space_between_form = True
             read_string = not read_string
         elif char == '=' and in_input_tag:
-            if in_input_tag and current_part == 'type':
-                in_type_attribute = True  
+            if in_input_tag :
+                if current_part == 'type':
+                    in_type_attribute = True
+                else :
+                    in_type_attribute = False
             if not read_string:
                 result.append(current_part)
                 result.append(char)
@@ -153,6 +156,8 @@ def print_html_tags_and_text(file_path):
             if read_string:
                 if in_type_attribute and current_part in ['text', 'password','email','number','checkbox'] and ' ' not in current_part :
                         result.append('X')
+                elif not in_method_attribute:
+                    result.append('X')
                 in_type_attribute = False
                 reading_space_between_input = False
                 current_part = ""
@@ -162,8 +167,11 @@ def print_html_tags_and_text(file_path):
                     reading_space_between_input = True
             read_string = not read_string
         elif char == '=' and in_button_tag:
-            if in_button_tag and current_part == 'type':
-                in_button_attribute = True  
+            if in_button_tag :
+                if current_part == 'type':
+                    in_button_attribute = True 
+                else:
+                    in_button_attribute = False 
             if not read_string:
                 result.append(current_part)
                 result.append(char)
@@ -174,6 +182,8 @@ def print_html_tags_and_text(file_path):
             if read_string:
                 if in_button_attribute and current_part in ['submit','reset','button'] and ' ' not in current_part :
                         result.append('X')
+                elif not in_button_attribute:
+                    result.append('X')
                 in_button_attribute = False
                 reading_space_between = False
                 current_part = ""
@@ -240,5 +250,5 @@ def print_html_tags_and_text(file_path):
 # else:
 #     print_html_tags_and_text(sys.argv[1])
 
-# hasil = print_html_tags_and_text("testing.html")
+# hasil = print_html_tags_and_text("tes.html")
 # print("ini hasil",hasil)
