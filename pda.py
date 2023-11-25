@@ -152,9 +152,9 @@ def processingpda(pda, html):
 
     if berhasil:
         if method=="F" and state in pda['final']:
-            print(colored("\nCongratulations, No problems detected\n"),"green")
+            print(colored("\nCongratulations","green",attrs=['bold'])+colored(", No problems detected\n","yellow"))
         elif method=="E" and stack==[pda['start_stack_symbol']]:
-            print(colored("\nCongratulations, No problems detected\n"),"green")
+            print(colored("\nCongratulations","green",attrs=['bold'])+colored(", No problems detected\n","yellow"))
         else:
             print(colored("\nError warning :","red",attrs=['bold']))
             print(colored("   Error","magenta")+" in "+colored(f"line number {last_temp[1]}","yellow"))
