@@ -257,6 +257,7 @@ if len(sys.argv) != 3:
     print("Usage: python main.py <'file'.txt> <'file'.html>")
 else:
     tokens=print_html_tags_and_text(sys.argv[2])
+    # print(tokens)
     thepda=bacapda(sys.argv[1])
     processingpda(thepda,tokens)
 

@@ -100,18 +100,22 @@ def processingpda(pda, html):
     state=pda['start_state']
     stack=[pda['start_stack_symbol']]
     method=pda["pda_type"] 
-    cur_token = 0
+    # cur_token = 0
     berhasil=True
     last_temp = None
     for temp in html :
         token=temp[0]
         if last_temp is None:
             last_temp = temp
-        cur_token = token
+        # cur_token = token
         benar=False
         # print("cur_token :",cur_token)
         # print("Stack :",stack)
         # print("state :",state)
+        if token=='notvalid':
+            break
+        if token=="":
+            continue
         for object in pda["transition"]:
             if(object["current"]==state and object["current"]!="FINAL"):
                 if(object["input"]=="e"):
@@ -123,7 +127,7 @@ def processingpda(pda, html):
                                 stack.append(any)
                         state=object['next']
             if(object["current"]==state):                        
-                if(object["input"]==cur_token):
+                if(object["input"]==token):
                     if object["top"]==stack[-1]:
                         stack.pop()
                         # print(f"infotop:{stack[-1]}")
@@ -158,36 +162,68 @@ def processingpda(pda, html):
         else:
             print(colored("\nError warning :","red",attrs=['bold']))
             print(colored("   Error","magenta")+" in "+colored(f"line number {last_temp[1]}","yellow"))
-            for object in pda["transition"]:
-                if(object["current"]==state):
-                    if object["top"]==stack[-1]:
-                        if(object["push"][0]=="e"):
-                            print(colored("expected","blue",attrs=['bold'])+f" an "+colored("'","green")+colored(f"{object['input']}","green",attrs=['underline'])+colored("'","green")+" after  "+colored("'","blue")+colored(f"{last_temp[0]}","blue",attrs=['underline'])+colored("'\n","blue"))
-                            found=True
-                            break
-            if not found:
+            if last_temp[0]=='notvalid':
+                print(colored("syntax","blue",attrs=['underline','bold'])+colored(" error ","red",attrs=['bold']) + colored("detected\n","blue",attrs=['bold']))
+            else:
                 for object in pda["transition"]:
-                        if(object["current"]==state):
-                            if object["top"]==stack[-1]:
-                                if(object["push"][0]!="e"):
-                                    print(colored("expected","blue",attrs=['bold'])+f" an "+colored("'","green")+colored(f"{object['input']}","green",attrs=['underline'])+colored("'","green")+" after  "+colored("'","blue")+colored(f"{last_temp[0]}","blue",attrs=['underline'])+colored("'\n","blue"))
+                    if(object["current"]==state):
+                        if object["top"]==stack[-1]:
+                            if(object["push"][0]=="e"):
+                                if(object["input"]=="e"):
+                                    print("hayolo")
+                                else:
+                                    print(colored("expected","blue",attrs=['bold'])+f" an "+colored("'","green")+colored(f"{object['input']}","green",attrs=['underline'])+colored("'","green")+" before "+colored("'","blue")+colored(f"{temp[0]}","blue",attrs=['underline'])+colored("'\n","blue"))
+                                found=True
+                                break
+                if not found:
+                    for object in pda["transition"]:
+                            if(object["current"]==state):
+                                if object["top"]==stack[-1]:
+                                    if(object["push"][0]!="e"):
+                                        print(colored("expected","blue",attrs=['bold'])+f" an "+colored("'","green")+colored(f"{object['input']}","green",attrs=['underline'])+colored("'","green")+" before "+colored("'","blue")+colored(f"{temp[0]}","blue",attrs=['underline'])+colored("'\n","blue"))
+                                        # break
     else :
         found=False
         print(colored("\nError warning :","red",attrs=['bold']))
-        print(colored("   Error","magenta")+" in "+colored(f"line number {last_temp[1]}","yellow"))
+        print(colored("   Error","magenta")+" in "+colored(f"line number {temp[1]}","yellow"))
         for object in pda["transition"]:
             if(object["current"]==state):
                 if object["top"]==stack[-1]:
                     if(object["push"][0]=="e"):
-                        print(colored("expected","blue",attrs=['bold'])+f" an "+colored("'","green")+colored(f"{object['input']}","green",attrs=['underline'])+colored("'","green")+" after  "+colored("'","blue")+colored(f"{last_temp[0]}","blue",attrs=['underline'])+colored("'\n","blue"))
+                        if(object["input"]=="e"):
+                            print(colored("expected ","blue",attrs=['bold'])+colored("none","green",attrs=['underline'])+" instead of "+colored("'","blue")+colored(f"{temp[0]}","blue",attrs=['underline'])+colored("'\n","blue"))
+                        else:
+                            print(colored("expected","blue",attrs=['bold'])+f" an "+colored("'","green")+colored(f"{object['input']}","green",attrs=['underline'])+colored("'","green")+" before "+colored("'","blue")+colored(f"{temp[0]}","blue",attrs=['underline'])+colored("'\n","blue"))
                         found=True
                         break
         if not found:
             for object in pda["transition"]:
                     if(object["current"]==state):
                         if object["top"]==stack[-1]:
-                            if(object["push"][0]!="e"):
-                                print(colored("expected","blue",attrs=['bold'])+f" an "+colored("'","green")+colored(f"{object['input']}","green",attrs=['underline'])+colored("'","green")+" after  "+colored("'","blue")+colored(f"{last_temp[0]}","blue",attrs=['underline'])+colored("'\n","blue"))
+                            input_to_display = "src" if "src" in [obj["input"] for obj in pda["transition"]] else object["input"]
+                            if last_temp[0]=="<img":
+                                print(colored("expected", "blue", attrs=['bold']) + f" an " + colored("'", "green") + colored("src", "green", attrs=['underline']) + colored("'", "green") + " before " + colored("'", "blue") + colored(f"{temp[0]}", "blue", attrs=['underline']) + colored("'\n", "blue"))
+                                break
+                            elif last_temp[0]=="<a":
+                                print(colored("expected", "blue", attrs=['bold']) + f" an " + colored("'", "green") + colored("href", "green", attrs=['underline']) + colored("'", "green") + " before " + colored("'", "blue") + colored(f"{temp[0]}", "blue", attrs=['underline']) + colored("'\n", "blue"))
+                                break
+                            elif last_temp[0]=="<link":
+                                print(colored("expected", "blue", attrs=['bold']) + f" an " + colored("'", "green") + colored("rel", "green", attrs=['underline']) + colored("'", "green") + " before " + colored("'", "blue") + colored(f"{temp[0]}", "blue", attrs=['underline']) + colored("'\n", "blue"))
+                                break
+                            elif last_temp[0]=="<button":
+                                print(colored("expected", "blue", attrs=['bold']) + f" an " + colored("'", "green") + colored("type", "green", attrs=['underline']) + colored("'", "green") + " before " + colored("'", "blue") + colored(f"{temp[0]}", "blue", attrs=['underline']) + colored("'\n", "blue"))
+                                break
+                            elif last_temp[0]=="<form":
+                                print(colored("expected", "blue", attrs=['bold']) + f" an " + colored("'", "green") + colored("action", "green", attrs=['underline']) + colored("'", "green") + " before " + colored("'", "blue") + colored(f"{temp[0]}", "blue", attrs=['underline']) + colored("'\n", "blue"))
+                                break
+                            elif last_temp[0]=="<input":
+                                print(colored("expected", "blue", attrs=['bold']) + f" an " + colored("'", "green") + colored("type", "green", attrs=['underline']) + colored("'", "green") + " before " + colored("'", "blue") + colored(f"{temp[0]}", "blue", attrs=['underline']) + colored("'\n", "blue"))
+                                break
+                            # input_to_display = "alt" if "alt" in [obj["input"] for obj in pda["transition"]] else object["input"]
+                            elif object["push"][0] != "e":
+                                
+                                print(colored("expected", "blue", attrs=['bold']) + f" an " + colored("'", "green") + colored(f"{input_to_display}", "green", attrs=['underline']) + colored("'", "green") + " before " + colored("'", "blue") + colored(f"{temp[0]}", "blue", attrs=['underline']) + colored("'\n", "blue"))
+                                break
 
 # thepda=bacapda("pda.txt")
 # tokens = print_html_tags_and_text("tes.html")
