@@ -1,4 +1,4 @@
-from main import *
+from termcolor import colored
 
 def bacapda(path: str) -> dict :
     pda = {
@@ -94,13 +94,19 @@ def printpda(string):
 # thepda=bacapda("pda.txt")
 # printpda("pda.txt")
 
-def processingpda(pda, tokens):
+def processingpda(pda, html):
+    # tokens=[item[0] for item in html]
+    error=False
     state=pda['start_state']
     stack=[pda['start_stack_symbol']]
     method=pda["pda_type"] 
     cur_token = 0
     berhasil=True
-    for token in tokens :
+    last_temp = None
+    for temp in html :
+        token=temp[0]
+        if last_temp is None:
+            last_temp = temp
         cur_token = token
         benar=False
         # print("cur_token :",cur_token)
@@ -133,26 +139,58 @@ def processingpda(pda, tokens):
                         # print(f"{object['current']} and {state}")
                         benar=True
 
-        print(f"current token : {token}")
-        print(f"current state : {state}")
-        print(f"Top Stack : {stack[-1]}")
-        print(stack)
-        print(benar)
-        print()
+        # print(f"current token : {token}")
+        # print(f"current state : {state}")
+        # print(f"Top Stack : {stack[-1]}")
+        # print(stack)
+        # print(benar)
+        # print()
         if not benar:
             berhasil=False
             break #matikan break nyo kalo mau lihat semua state
+        last_temp = temp
 
     if berhasil:
         if method=="F" and state in pda['final']:
-            print("YA KAMU BETUL")
+            print(colored("\nCongratulations, No problems detected\n"),"green")
         elif method=="E" and stack==[pda['start_stack_symbol']]:
-            print("YA KAMU BETUL")
+            print(colored("\nCongratulations, No problems detected\n"),"green")
         else:
-            print("SAYANG SEKALI KAMU SALAH")
+            print(colored("\nError warning :","red",attrs=['bold']))
+            print(colored("   Error","magenta")+" in "+colored(f"line number {last_temp[1]}","yellow"))
+            for object in pda["transition"]:
+                if(object["current"]==state):
+                    if object["top"]==stack[-1]:
+                        if(object["push"][0]=="e"):
+                            print(colored("expected","blue",attrs=['bold'])+f" an "+colored("'","green")+colored(f"{object['input']}","green",attrs=['underline'])+colored("'","green")+" after  "+colored("'","blue")+colored(f"{last_temp[0]}","blue",attrs=['underline'])+colored("'\n","blue"))
+                            found=True
+                            break
+            if not found:
+                for object in pda["transition"]:
+                        if(object["current"]==state):
+                            if object["top"]==stack[-1]:
+                                if(object["push"][0]!="e"):
+                                    print(colored("expected","blue",attrs=['bold'])+f" an "+colored("'","green")+colored(f"{object['input']}","green",attrs=['underline'])+colored("'","green")+" after  "+colored("'","blue")+colored(f"{last_temp[0]}","blue",attrs=['underline'])+colored("'\n","blue"))
+    else :
+        found=False
+        print(colored("\nError warning :","red",attrs=['bold']))
+        print(colored("   Error","magenta")+" in "+colored(f"line number {last_temp[1]}","yellow"))
+        for object in pda["transition"]:
+            if(object["current"]==state):
+                if object["top"]==stack[-1]:
+                    if(object["push"][0]=="e"):
+                        print(colored("expected","blue",attrs=['bold'])+f" an "+colored("'","green")+colored(f"{object['input']}","green",attrs=['underline'])+colored("'","green")+" after  "+colored("'","blue")+colored(f"{last_temp[0]}","blue",attrs=['underline'])+colored("'\n","blue"))
+                        found=True
+                        break
+        if not found:
+            for object in pda["transition"]:
+                    if(object["current"]==state):
+                        if object["top"]==stack[-1]:
+                            if(object["push"][0]!="e"):
+                                print(colored("expected","blue",attrs=['bold'])+f" an "+colored("'","green")+colored(f"{object['input']}","green",attrs=['underline'])+colored("'","green")+" after  "+colored("'","blue")+colored(f"{last_temp[0]}","blue",attrs=['underline'])+colored("'\n","blue"))
 
-thepda=bacapda("pda.txt")
-# tokens=['<html', '>', '<head', '>', '<script', '>', '</script', '>', '</head', '>', '<body', '>', '</body', '>', '</html', '>']
-tokens = print_html_tags_and_text("tes.html")
-print()
-processingpda(thepda,tokens)
+# thepda=bacapda("pda.txt")
+# tokens = print_html_tags_and_text("tes.html")
+# print(tokens)
+
+# processingpda(thepda,[item[0] for item in tokens])

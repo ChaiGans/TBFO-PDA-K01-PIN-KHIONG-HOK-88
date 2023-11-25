@@ -1,11 +1,11 @@
 START HEAD BODY HEADGLOBAL INSIDETITLEHEAD INSIDESCRIPTHEAD SCRIPTVALIDHEAD TRANSITIONHEADBODY TRANSITIONBODYHTML INEM INB INABBR INSTRONG INSMALL INSIDEABODY INSIDEBUTTONBODY INSIDEFORMBODY INDIV INTABLE INTABLEGLOBAL INTRINTABLE INTRINTABLEGLOBAL INTH THINTRCONTENT INTD TDINTRCONTENT INTDINTABLE INTHINTABLE BODYGLOBAL INSIDETITLEBODY INSIDESCRIPTBODY INSIDEH1BODY INSIDEH2BODY INSIDEH3BODY INSIDEH4BODY INSIDEH5BODY INSIDEH6BODY INSIDEPBODY SCRIPTVALIDBODY HREFVALIDBODY TYPEVALIDBODY ACTIONVALIDBODY METHODVALIDBODY END FINAL
-<html > </html <head </head <body </body <title </title <link </link rel = href X STR notvalid <script </script <h1 </h1 <h2 </h2 <h3 </h3 <h4 </h4 <h5 </h5 <h6 </h6 <p </p <br </br <em </em <b </b <abbr </abbr <strong </strong <small </small <hr </hr <div </div <a </a src <img </img alt <button </button type <form </form action method <input </input <table </table <tr </tr <td </td <th </th # input word symbols
+<html > </html <head </head <body </body <title </title <link </link rel = href X STR notvalid <script </script <h1 </h1 <h2 </h2 <h3 </h3 <h4 </h4 <h5 </h5 <h6 </h6 <p </p <br </br <em </em <b </b <abbr </abbr <strong </strong <small </small <hr </hr <div </div <a </a src <img </img alt <button </button type <form </form action method <input </input <table </table <tr </tr <td </td <th </th
 Z OHTML CHTML OHEAD CHEAD OTITLE OSCRIPT OLINK REL = X HREF ID STYLE CLASS CTITLE CSCRIPT SRC OBODY CBODY OH1 OH2 OH3 OH4 OH5 OH6 OP OH OBR CEM OEM CH1 CH2 CH3 CH4 CH5 CH6 CP CDIV CA CBUTTON CTABLE CFORM CTR CTD CTH CB OB CABBR OABBR CSTRONG OSTRONG CSMALL OSMALL OHR OA OIMG ALT OBUTTON OFORM OINPUT CINPUT OTABLE ODIV OTR OTH OTD TYPE ACTION METHOD
 START
 Z
 F
 E
-START <html Z START OHTML,Z  # list of productions (current state, read from word, take from stack, next state, action)
+START <html Z START OHTML,Z
 START > OHTML HEAD CHTML,OHTML
 HEAD <head CHTML HEAD OHEAD,CHTML
 BODY id OHEAD HEADGLOBAL ID,OHEAD
