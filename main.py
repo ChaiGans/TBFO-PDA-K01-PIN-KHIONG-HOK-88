@@ -85,7 +85,7 @@ def print_html_tags_and_text(file_path):
                 if content[i:i+4] == '<!--':
                     comment_end = content.find('-->', i)
                     if comment_end != -1:
-                        result.append(['!--',line_number])
+                        result.append(['<!--',line_number])
                         # Append everything inside the comment as 'STR'
                         result.append(['STR',line_number])
                         result.append(['-->',line_number])
