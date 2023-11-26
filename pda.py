@@ -88,30 +88,17 @@ def printpda(string):
     print(ngasal['final'])
     print(ngasal['pda_type'])
 
-    # for object in ngasal['transition']:
-    #     print(object)
-
-# thepda=bacapda("pda.txt")
-# printpda("pda.txt")
-
 def processingpda(pda, html):
-    # tokens=[item[0] for item in html]
-    error=False
     state=pda['start_state']
     stack=[pda['start_stack_symbol']]
     method=pda["pda_type"] 
-    # cur_token = 0
     berhasil=True
     last_temp = None
     for temp in html :
         token=temp[0]
         if last_temp is None:
             last_temp = temp
-        # cur_token = token
         benar=False
-        # print("cur_token :",cur_token)
-        # print("Stack :",stack)
-        # print("state :",state)
         if token=='notvalid':
             break
         if token=="":
@@ -130,25 +117,12 @@ def processingpda(pda, html):
                 if(object["input"]==token):
                     if object["top"]==stack[-1]:
                         stack.pop()
-                        # print(f"infotop:{stack[-1]}")
-                        # print(f"statebefore:{state}")
                         if object['push'][0]!="e":
-                            # stack.append(object['push'][0])
                             for any in reversed(object["push"]):
                                 stack.append(any)
                         state=object['next']
-                        # print(f"next:{object['next']}")
-                        # print(f"push:{object['push']}")
-                        # print(f"infotop2:{stack[-1]}")
-                        # print(f"{object['current']} and {state}")
                         benar=True
 
-        # print(f"current token : {token}")
-        # print(f"current state : {state}")
-        # print(f"Top Stack : {stack[-1]}")
-        # print(stack)
-        # print(benar)
-        # print()
         if not benar:
             berhasil=False
             break #matikan break nyo kalo mau lihat semua state
@@ -162,7 +136,7 @@ def processingpda(pda, html):
         else:
             print(colored("\nError warning :","red",attrs=['bold']))
             print(colored("   Error","magenta")+" in "+colored(f"line number {last_temp[1]}","yellow"))
-            if last_temp[0]=='notvalid':
+            if temp[0]=='notvalid':
                 print(colored("syntax","blue",attrs=['underline','bold'])+colored(" error ","red",attrs=['bold']) + colored("detected\n","blue",attrs=['bold']))
             else:
                 found=True
@@ -223,9 +197,3 @@ def processingpda(pda, html):
                             elif object["push"][0] != "e":
                                 print(colored("expected", "blue", attrs=['bold']) + f" an " + colored("'", "green") + colored(f"{object['input']}", "green", attrs=['underline']) + colored("'", "green") + " before " + colored("'", "blue") + colored(f"{temp[0]}", "blue", attrs=['underline']) + colored("'\n", "blue"))
                                 break
-
-# thepda=bacapda("pda.txt")
-# tokens = print_html_tags_and_text("tes.html")
-# print(tokens)
-
-# processingpda(thepda,[item[0] for item in tokens])
