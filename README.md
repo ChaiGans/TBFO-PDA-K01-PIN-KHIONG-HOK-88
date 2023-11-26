@@ -75,7 +75,8 @@ Make sure you define the pda file and the html file to run this program
 TBFO-PDA-K01-PIN-KHIONG-HOK-88
 ├─── docs
 |    |
-|    ├─── Laporan_TBFO.pdf
+|    └─── Laporan_TBFO.pdf
+|
 ├─── tools
 |    | 
 |    ├─── pdagrouper.py
