@@ -156,7 +156,7 @@ def print_html_tags_and_text(file_path):
             if read_string:
                 if in_type_attribute and current_part in ['text', 'password','email','number','checkbox'] and ' ' not in current_part :
                         result.append(['X',line_number])
-                elif not in_method_attribute:
+                elif not in_type_attribute:
                     result.append(['X',line_number])                        
                 in_type_attribute = False
                 reading_space_between_input = False
@@ -248,5 +248,6 @@ if len(sys.argv) != 3:
     print("Usage: python main.py <'file'.txt> <'file'.html>")
 else:
     tokens=print_html_tags_and_text(sys.argv[2])
+    print(tokens)
     thepda=bacapda(sys.argv[1])
     processingpda(thepda,tokens)
