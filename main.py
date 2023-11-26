@@ -1,5 +1,4 @@
 import sys
-import re
 from pda import *
 
 def print_html_tags_and_text(file_path):
@@ -7,7 +6,6 @@ def print_html_tags_and_text(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         content = file.read()
 
-    # content = re.sub(r'\n', '', content)
     result = []
     current_part = ""
     inside_tag = False
@@ -30,8 +28,6 @@ def print_html_tags_and_text(file_path):
     i = 0
     while i < len(content):
         char = content[i]
-        # print("Current Part:", current_part)
-        # print(result)
 
         if char == '\n':
             line_number += 1
@@ -60,7 +56,6 @@ def print_html_tags_and_text(file_path):
             elif inside_tag and current_part == '<' and content.startswith('/button', i + 1):
                 in_button_tag = False
 
-
             if content[i+1:i+2] == '/':
                 slash_index = i + 2  # Start after '</'
                 tag_end = content.find('>', slash_index)
@@ -79,8 +74,7 @@ def print_html_tags_and_text(file_path):
                     else:
                         current_part += '/' + tag_name
                         i = tag_end - 1             
-            
-            
+                 
             if not error_space:
                 if content[i:i+4] == '<!--':
                     comment_end = content.find('-->', i)
@@ -247,19 +241,12 @@ def print_html_tags_and_text(file_path):
     if current_part:
         result.append([current_part.strip(), line_number])
     result = [item for item in result if not (isinstance(item[0], str) and item[0].isspace() and item[0] != 'STR')]
-    # print(result)
     return result
 
-
-
-
+# process
 if len(sys.argv) != 3:
     print("Usage: python main.py <'file'.txt> <'file'.html>")
 else:
     tokens=print_html_tags_and_text(sys.argv[2])
-    # print(tokens)
     thepda=bacapda(sys.argv[1])
     processingpda(thepda,tokens)
-
-# hasil = print_html_tags_and_text("tes.html")
-# print("ini hasil",hasil)
