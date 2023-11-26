@@ -73,7 +73,9 @@ Make sure you define the pda file and the html file to run this program
 ## File Structures Overview
 ```
 TBFO-PDA-K01-PIN-KHIONG-HOK-88
-|
+├─── docs
+|    |
+|    ├─── Laporan_TBFO.pdf
 ├─── tools
 |    | 
 |    ├─── pdagrouper.py
